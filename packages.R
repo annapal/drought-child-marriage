@@ -12,3 +12,4 @@ library(viridis)
 
 library(fixest)
 library(marginaleffects)
+library(car)

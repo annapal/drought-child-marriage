@@ -22,7 +22,7 @@ for (iso in unique(drought_dat$ISO)) {
   reg_names <- gadm(iso, version="3.6", path="data")$NAME_1
   
   # Make dataframe
-  panel_dat <- data.frame(iso=iso, region=reg_names,
+  panel_dat <- data.frame(iso=iso, Adm1=reg_names,
                           year=rep(min_yr:max_yr, each=length(reg_names)),
                           drought=0, event_no=NA)
   
@@ -45,9 +45,9 @@ for (iso in unique(drought_dat$ISO)) {
     })
     
     # Apply indicator for drought region
-    panel_dat[(panel_dat$region %in% treated) & (panel_dat$year %in% event_start:event_end),
+    panel_dat[(panel_dat$Adm1 %in% treated) & (panel_dat$year %in% event_start:event_end),
               "drought"] <- 1
-    panel_dat[(panel_dat$region %in% treated) & (panel_dat$year %in% event_start:event_end),
+    panel_dat[(panel_dat$Adm1 %in% treated) & (panel_dat$year %in% event_start:event_end),
               "event_no"] <- event_no
   }
   
@@ -56,10 +56,10 @@ for (iso in unique(drought_dat$ISO)) {
   
   # Plot the panel
   panel_dat$drought <- factor(panel_dat$drought, levels = c(0, 1), labels = c("No Drought", "Drought"))
-  ggplot(panel_dat, aes(x = year, y = region, fill = drought)) +
+  ggplot(panel_dat, aes(x = year, y = Adm1, fill = drought)) +
     geom_tile(color = "white") +
     scale_fill_manual(values = c("lightblue", "darkblue")) +
-    labs(x = "Year", y = "Region", title = paste0(iso, ": Droughts")) +
+    labs(x = "Year", y = "Adm1", title = paste0(iso, ": Droughts")) +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
   ggsave(paste0(getwd(),"/data/emdat/panel_plots/", iso, "_panel.jpeg"),
