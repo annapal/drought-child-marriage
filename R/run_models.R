@@ -12,6 +12,7 @@ all_models <- list()
 data_merged_drought <- list()
 
 # Iso codes of countries to include in the analysis
+# EXCLUDING INDA FOR NOW SINCE I DON'T HAVE ENOUGH MEMORY TO RUN
 iso_cdes <- setdiff(names(drought_panel_dat), "IND")
 
 for (iso in iso_cdes) {
