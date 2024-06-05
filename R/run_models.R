@@ -38,6 +38,25 @@ for (iso in iso_cdes) {
   drought_cohort$cohort <- as.numeric(factor(drought_cohort$drought_sequence))
   drought_dat <- left_join(drought_dat, drought_cohort)
   
+  # Create variable for years of consecutive exposure to droughts
+  drought_dat$drought_yr <- 0
+  for (i in 2:nrow(drought_dat)) {
+    if (drought_dat$drought2[i]==1 & drought_dat$drought2[i-1]==0) {
+      drought_dat$drought_yr[i] <- 1 # First year of drought
+    } else if (drought_dat$drought2[i]==1 & drought_dat$drought2[i-1]==1) {
+      drought_dat$drought_yr[i] <- drought_dat$drought_yr[i-1] + 1 # Subsequent years
+    }
+  }
+  
+  # Create a variable for exposure to 3 years of drought
+  # (i.e. all regions and years where there was at least 3 years of exposure)
+  drought_dat$drought_3yr <- 0
+  for (i in 3:nrow(drought_dat)) {
+    if (drought_dat$drought_yr[i]==3) {
+      drought_dat$drought_3yr[(i-2):i] <- 1
+    }
+  }
+  
   # Merge drought data to marriage data & remove non-relevant years
   data <- left_join(data, drought_dat) %>% filter(!is.na(cohort))
   

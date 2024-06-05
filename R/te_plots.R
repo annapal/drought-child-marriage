@@ -92,5 +92,33 @@ ggplot(results_all, aes(x = estimate, y = reorder(country, estimate),
 
 ggsave("figures/tes_with_lt.jpeg", height = 12, width = 8)
 
+# TEs by urban-rural ------------------------------------------------------
+
+# Load the results
+rural_results_tes <- read_excel("results/tes_by_rural.xlsx")
+rural_results_tes$country <- countrycode(rural_results_tes$iso, "iso3c", "un.name.en")
+rural_results_tes$rural <- factor(rural_results_tes$rural, levels = c(0,1), labels = c("Urban", "Rural"))
+
+# Plot results together
+ggplot(rural_results_tes, aes(x = estimate, y = reorder(country, estimate),
+                        color = rural)) +
+  geom_point(size=0.8, position = position_dodge(width=0.5)) +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
+                 height = 0, linewidth = 0.5,
+                 position = position_dodge(width=0.5)) +
+  geom_vline(xintercept = 0, linewidth = 0.25) +
+  labs(x = "Change in the prob. of marriage (95% CI)",
+       y = "",
+       color = " ") + 
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.x = element_line(linewidth = 0.25),
+        axis.ticks.x = element_line(linewidth = 0.25),
+        legend.key = element_blank(),
+        axis.text = element_text(size=12)) + 
+  xlim(-0.1, 0.1)
+
+ggsave("figures/tes_rural_urban.jpeg", height = 12, width = 8)
 
 
