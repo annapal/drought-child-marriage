@@ -59,6 +59,3 @@ save(all_lt_models, file="data/all_lt_models.Rdata")
 write_xlsx(unit_trends, "results/linear_unit_trends.xlsx")
 write_xlsx(results_lt, "results/tes_with_lt.xlsx")
 
-
-
-
