@@ -12,8 +12,7 @@ all_models <- list()
 data_merged_drought <- list()
 
 # Iso codes of countries to include in the analysis
-# EXCLUDING INDA FOR NOW SINCE I DON'T HAVE ENOUGH MEMORY TO RUN
-iso_cdes <- setdiff(names(drought_panel_dat), "IND")
+iso_cdes <- names(drought_panel_dat)
 
 for (iso in iso_cdes) {
   
@@ -27,7 +26,8 @@ for (iso in iso_cdes) {
     group_by(Adm1) %>%
     mutate(
       drought2=ifelse(lag(drought, default=0)==1, 1, drought),
-      lagged=ifelse((drought2-drought==1), 1, 0) # Indicator where drought exposure is lagged
+      lagged=ifelse((drought2-drought==1), 1, 0), # Indicator where drought exposure is lagged
+      event_no2 = ifelse(lagged==1, lag(event_no), event_no) # Add the event no. where lagged
     ) %>%
     ungroup()
   
@@ -67,14 +67,15 @@ for (iso in iso_cdes) {
     mutate(age_dm = age_turned - mean(age_turned),
            rural_dm = rural - mean(rural)) %>%
     ungroup()
-  
+
   # Run extended twfe model
   start_yr <- min(drought_dat$year)
   mod <- feols(married ~ drought2:i(cohort, i.year, ref=1, ref2=start_yr)/
                  (age_dm + rural_dm)|
-                 cohort[age_turned, rural] + year[age_turned, rural], 
-               data=data, vcov=~Adm1, weights=~Denorm_Wt)
-  
+                 cohort[age_turned, rural] + year[age_turned, rural],
+               data=data, vcov=~Adm1, weights=~Denorm_Wt,
+               mem.clean=TRUE)
+
   # Save model to list
   all_models[[iso]] <- mod
   
@@ -83,6 +84,6 @@ for (iso in iso_cdes) {
   
 } 
 
-save(all_models, file="data/all_models.Rdata")
+# save(all_models, file="data/all_models.Rdata")
 save(data_merged_drought, file="data/data_merged_drought.Rdata")
 

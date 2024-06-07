@@ -24,7 +24,8 @@ for (iso in iso_cdes) {
                  (age_dm + rural_dm) + 
                    i(cohort, year, ref=1)| # Add cohort-level linear trend
                  cohort[age_turned, rural] + year[age_turned, rural], 
-               data=data, vcov=~Adm1, weights=~Denorm_Wt)
+               data=data, vcov=~Adm1, weights=~Denorm_Wt,
+               mem.clean = TRUE)
   
   # Save model to list
   all_lt_models[[iso]] <- mod_lt
