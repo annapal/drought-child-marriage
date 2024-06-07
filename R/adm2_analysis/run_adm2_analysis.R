@@ -19,13 +19,13 @@ results_all <- data.frame() # Main results
 for (iso in iso_cdes) {
   
   # Get data for specific country
-  data <- long_data[[iso]] %>% filter(!is.na(Adm2))
+  data <- long_data[[iso]] %>% filter(!is.na(Adm2)) %>% select(-Reg)
   drought_dat <- drought_panel_dat[[iso]]
   
   # Assign year after drought ends as 1
   drought_dat <- drought_dat %>%
-    arrange(Adm2, year) %>%
-    group_by(Adm2) %>%
+    arrange(Reg, year) %>%
+    group_by(Reg) %>%
     mutate(
       drought2=ifelse(lag(drought, default=0)==1, 1, drought),
       lagged=ifelse((drought2-drought==1), 1, 0) # Indicator where drought exposure is lagged
@@ -34,7 +34,7 @@ for (iso in iso_cdes) {
   
   # Assign cohorts to the drought data based on treatment history
   drought_cohort <- drought_dat %>%
-    group_by(Adm2) %>%
+    group_by(Reg) %>%
     summarize(drought_sequence = paste(drought2, collapse = ""))
   drought_cohort$cohort <- as.numeric(factor(drought_cohort$drought_sequence))
   drought_dat <- left_join(drought_dat, drought_cohort)

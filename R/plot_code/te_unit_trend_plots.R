@@ -7,7 +7,7 @@ lt_results$country <- countrycode(lt_results$iso, "iso3c", "un.name.en")
 
 # Plot the cohort-level coefficients and error bars
 ggplot(lt_results, aes(x = coef, y = cohort)) +
-  geom_point(size=0.8) +
+  geom_point(size=1.5, shape=18) +
   geom_errorbarh(aes(xmin = lower, xmax = upper),
                  height = 0, linewidth = 0.5) +
   geom_vline(xintercept = 0, linewidth = 0.25) +

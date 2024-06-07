@@ -45,6 +45,7 @@ plot <-
         legend.position = c(0.1, 0.25), legend.title=element_blank(),
         panel.background = element_blank()) +
   scale_fill_gradient(low = "beige", high = "darkred") +
+  ggtitle("(a) Average annual probability of marriage") +
   geom_sf(fill = NA, color = "black", lwd = 0.1)
 
 # Save the plot
@@ -97,6 +98,7 @@ plot2 <-
   xlab("") +
   ylab("") +
   scale_color_manual(values= c("#87CEFA", "#1E90FF", "#0000CD", "#191970")) +
+  ggtitle("(b) Approximate location of drought events") +
   guides(color=guide_legend(override.aes=list(fill=NA)))
 
 # Save plot

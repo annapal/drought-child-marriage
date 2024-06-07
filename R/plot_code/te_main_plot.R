@@ -22,7 +22,7 @@ p <- ggplot(results, aes(x = estimate, y = ID)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
                  height = 0, linewidth = 0.5) +
   geom_vline(xintercept = 0, linewidth = 0.25, linetype="dotted") +
-  labs(x = "Change in the prob. of marriage (95% CI)",
+  labs(x = "Change in the probability of marriage (95% CI)",
        y = "") + 
   theme(panel.grid = element_blank(),
         panel.background = element_blank(),
