@@ -4,7 +4,8 @@
 # Load the DHS/MICS data
 load("data/data_merged_drought.Rdata")
 
-all_data <- data.frame() # data frame to store probabilities for each country
+all_data <- data.frame() # data frame to store probabilities for each region
+prop_country <- data.frame() # Dataframe to store probs for each country
 
 for (iso in names(data_merged_drought)) {
   
@@ -13,15 +14,19 @@ for (iso in names(data_merged_drought)) {
   # Calculate annual probability of marriage for each region
   prop <- data %>%
     group_by(Adm1) %>%
-    summarise(prop = mean(married))
+    summarise(prop = weighted.mean(married, Denorm_Wt))
+  prop$GID_0 <- iso
   
-  # Get polygons
-  regions <- gadm(iso, level=1, path="data", version="3.6")
-  reg_data <- st_as_sf(regions) # Set as sf object
+  # Calculate annual probability of marriage in each country
+  prop2 <- data %>%
+    group_by(iso) %>%
+    summarise(prop = weighted.mean(married, Denorm_Wt))
   
   # Merge data
-  plot_data <- left_join(reg_data, prop, by=join_by(NAME_1==Adm1))
-  all_data <- rbind(all_data, plot_data)
+  all_data <- rbind(all_data, prop)
+  
+  # Save country prevalence
+  prop_country <- rbind(prop_country, prop2)
 }
   
 # Get list of iso codes for all countries
@@ -35,17 +40,25 @@ all_countries <- setdiff(country_codes()$ISO3, c("AIA","ATA","ABW","BVT","IOT","
 countries <- gadm(all_countries, level=0, path="data", version="3.6")
 country_data <- st_as_sf(countries)
 
+# Get all Adm1 geometries
+regions <- gadm(unique(all_data$GID_0), level=1, path="data", version="3.6")
+reg_data <- st_as_sf(regions) # Set as sf object
+
+# Merge with probability data
+plot_data <- left_join(reg_data, all_data, by=join_by(NAME_1==Adm1, GID_0==GID_0))
+
 # Plot the annual probabilities
 plot <- 
   ggplot(country_data) +
-  geom_sf(data = all_data, aes(fill = prop, geometry = geometry), lwd = 0) +
+  geom_sf(aes(color="No Data", geometry = geometry), lwd = 0) +
+  scale_color_manual(values = c("No Data" = "black")) +
+  geom_sf(data = plot_data, aes(fill = prop, geometry = geometry), lwd = 0) +
+  scale_fill_gradient(low = "beige", high = "darkred", na.value = "grey80") +
+  ggtitle("(a) Average annual probability of marriage") +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        legend.position = c(0.1, 0.25), legend.title=element_blank(),
+        axis.text = element_blank(), legend.title=element_blank(),
         panel.background = element_blank()) +
-  scale_fill_gradient(low = "beige", high = "darkred") +
-  ggtitle("(a) Average annual probability of marriage") +
   geom_sf(fill = NA, color = "black", lwd = 0.1)
 
 # Save the plot
@@ -83,6 +96,9 @@ all_droughts_merged$year <- as.numeric(substr(all_droughts_merged$event_no2, 5, 
 all_droughts_merged$decade <- cut(all_droughts_merged$year, breaks = c(1979, 1990, 2000, 2010, 2020),
                           labels = c("1980s", "1990s", "2000s", "2010s"),
                           include.lowest = TRUE)
+# Add country variable
+all_droughts_merged$iso <- substr(all_droughts_merged$event_no2, 1, 3)
+
 
 # Plot drought locations
 plot2 <- 
