@@ -108,13 +108,12 @@ plot2 <-
              size=0.85) + 
   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        legend.position = c(0.1, 0.25), legend.title=element_blank(),
+        axis.text = element_blank(), legend.title=element_blank(),
         panel.background = element_blank()) +
   xlab("") +
   ylab("") +
   scale_color_manual(values= c("#87CEFA", "#1E90FF", "#0000CD", "#191970")) +
-  ggtitle("(b) Approximate location of drought events") +
+  ggtitle("(b) Approximate location of analyzed drought events") +
   guides(color=guide_legend(override.aes=list(fill=NA)))
 
 # Save plot
