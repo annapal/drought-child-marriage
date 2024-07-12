@@ -54,7 +54,7 @@ plot <-
   scale_color_manual(values = c("No Data" = "black")) +
   geom_sf(data = plot_data, aes(fill = prop, geometry = geometry), lwd = 0) +
   scale_fill_gradient(low = "beige", high = "darkred", na.value = "grey80") +
-  ggtitle("(a) Average annual probability of marriage") +
+  ggtitle(~bold("a.")) +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.ticks = element_blank(),
         axis.text = element_blank(), legend.title=element_blank(),
@@ -113,7 +113,7 @@ plot2 <-
   xlab("") +
   ylab("") +
   scale_color_manual(values= c("#87CEFA", "#1E90FF", "#0000CD", "#191970")) +
-  ggtitle("(b) Approximate location of analyzed drought events") +
+  ggtitle(~bold("b.")) +
   guides(color=guide_legend(override.aes=list(fill=NA)))
 
 # Save plot
