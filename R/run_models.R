@@ -12,9 +12,6 @@ run_models <- function(long_data, drought_panel_dat) {
   # Iso codes of countries to include in the analysis
   iso_cdes <- names(drought_panel_dat)
   
-  # Progress bar
-  pb <- txtProgressBar(min = 0, max = length(iso_cdes), style = 3)
-  
   # Run the model for each country
   for (iso in iso_cdes) {
     
@@ -83,10 +80,6 @@ run_models <- function(long_data, drought_panel_dat) {
     
     # Save the merged data to list
     data_merged_drought[[iso]] <- data
-    
-    # Update progress bar
-    setTxtProgressBar(pb, iso)
-    
   } 
   
   # Save all data
@@ -96,5 +89,5 @@ run_models <- function(long_data, drought_panel_dat) {
   print("Model data saved in: data/all_models.Rdata")
   
   # Return model data and merged DHS/MICS-Drought data
-  return(list(all_models, data_merged_drought))
+  return(list(all_models = all_models, data_merged_drought = data_merged_drought))
 }

@@ -81,7 +81,6 @@ create_drought_panels <- function() {
   print("Drought panel data saved in: data/emdat/drought_panel.Rdata")
   print("Plots saved in: data/emdat/panel_plots/")
   
-  
   # Return drought data
   return(drought_panel_dat)
 }

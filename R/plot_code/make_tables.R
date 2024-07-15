@@ -50,8 +50,3 @@ for (iso in names(data_merged_drought)) {
 colnames(table_a2) <- c("Country", "Years included", "No. of child marriages", "No. of person-years")
 write_xlsx(table_a2, "results/table_a2.xlsx")
 
-
-
-
-
-
