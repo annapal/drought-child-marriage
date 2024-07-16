@@ -7,8 +7,6 @@ library(tidyverse)
 library(geodata)
 library(sf)
 library(ggspatial)
-library(wesanderson)
-library(viridis)
 library(countrycode)
 library(plotly)
 

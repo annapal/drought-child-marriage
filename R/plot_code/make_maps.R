@@ -71,9 +71,6 @@ plot_prob_map <- function(data_merged_drought) {
 
 # Location of droughts plot ------------------------------------------------
 
-# Load the drought data
-load("data/emdat/drought_panel.Rdata")
-
 plot_drought_map <- function(drought_panel_dat) {
   
   # Combine all drought data together across countries

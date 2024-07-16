@@ -2,7 +2,7 @@
 source("./packages.R")
 
 ## Load R files
-# lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
+lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
 
 # Run the analysis --------------------------------------------------------
 
