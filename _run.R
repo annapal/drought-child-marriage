@@ -25,17 +25,29 @@ calculate_tes(twfe_data$all_models, twfe_data$data_merged_drought)
 # WARNING: Takes a long time to run, and requires a lot of memory
 pt_test(twfe_data$data_merged_drought, drought_panel_dat)
 
+# Run analysis at Adm2 level
+drought_panel_dat_2 <- create_drought_panels_adm2()
+adm2_analysis(long_data, drought_panel_dat_2)
+
 # Create figures and tables for paper ------------------------------------
 
-# Map of annual probability of marriage among included countries
-plot_prob_map(data_merged_drought)
-
-# Map of approximate location of drought events
-plot_drought_map(drought_panel_dat)
+# Make maps
+plot_prob_map(twfe_data$data_merged_drought) # Probability of marriage
+plot_drought_map(drought_panel_dat) # Location of drought events
 
 # Make tables for appendix
-# TODO
+make_tables(twfe_data$data_merged_drought)
 
+# Plot treatment effects
+plot_main_te() # Main figure
+plot_te_rural() # By rural-urban status
+plot_te_time() # By consecutive years of drought exposure
 
+# Plot PT tests
+plot_pt_coefs() # Coefs of unit-level trends
+plot_te_lt() # TEs with unit-level trends
 
+# Plot sensitivity analyses
+plot_te_adm2() # Adm2 analysis
+calc_misclassification(twfe_data$data_merged_drought, drought_panel_dat)
 
