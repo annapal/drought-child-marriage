@@ -69,6 +69,11 @@ calc_misclassification <- function(data_merged_drought, drought_panel_dat) {
     dat_all <- rbind(dat_all, list(country, n, n2, round(prop, 3)))
   }
   
+  # If the results folder doesn't exist, create it
+  if (!dir.exists("results")) {
+    dir.create(dir_path)
+  }
+  
   # Save table to spreadsheet
   colnames(dat_all) <- c("country", "n_total", "n_move", "prop")
   write_xlsx(dat_all, "results/misclassification.xlsx")
@@ -89,6 +94,11 @@ calc_misclassification <- function(data_merged_drought, drought_panel_dat) {
     theme(
       panel.grid.major.y = element_blank(), 
     )
+  
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
   
   # Save plot
   ggsave("figures/prop_misclassified.jpeg", width = 6, height = 8, dpi= 600)

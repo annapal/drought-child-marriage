@@ -37,6 +37,11 @@ plot_te_adm2 <- function() {
     facet_wrap(~country, ncol=1,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   # Save the plot
   ggsave(filename = "figures/te_adm2.jpeg", plot = p, height = 6, width = 3)
   print("Plot of Adm2 analysis saved in: figures/te_adm2.jpeg")

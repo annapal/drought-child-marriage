@@ -75,6 +75,11 @@ adm2_analysis <- function(long_data, drought_panel_dat) {
     
   } 
   
+  # If the results folder doesn't exist, create it
+  if (!dir.exists("results")) {
+    dir.create(dir_path)
+  }
+  
   # Save the results
   save(all_models, file="data/all_models_adm2.Rdata")
   save(data_merged_drought, file="data/data_merged_drought_adm2.Rdata")

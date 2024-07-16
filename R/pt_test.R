@@ -53,6 +53,11 @@ pt_test <- function(data_merged_drought, drought_panel_dat) {
     results_lt <- rbind(results_lt, result)
   }
   
+  # If the results folder doesn't exist, create it
+  if (!dir.exists("results")) {
+    dir.create(dir_path)
+  }
+  
   # Save the results
   save(all_lt_models, file="data/all_lt_models.Rdata")
   write_xlsx(unit_trends, "results/linear_unit_trends.xlsx")

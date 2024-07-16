@@ -51,10 +51,16 @@ calculate_tes <- function(all_models, data_merged_drought) {
     
   }
   
+  # If the results folder doesn't exist, create it
+  if (!dir.exists("results")) {
+    dir.create(dir_path)
+  }
+  
   # Write the results to excel
   write_xlsx(results_all, "results/all_tes.xlsx")
   write_xlsx(results_res, "results/tes_by_rural.xlsx")
   write_xlsx(results_time, "results/tes_by_yr.xlsx")
+  
   print("Treatment effects saved in: results/all_tes.xlsx")
   print("Treatment effects by rural status saved in: results/tes_by_rural.xlsx")
   print("Treatment effects by year saved in: results/tes_by_yr.xlsx")

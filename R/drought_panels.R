@@ -73,7 +73,6 @@ create_drought_panels <- function() {
     # Save the panel plot
     ggsave(paste0(getwd(),"/data/emdat/panel_plots/", iso, "_panel.jpeg"),
            height = max(length(reg_names)/5, 5), width = 10)
-    
   }
   
   # Save drought panel data for all countries

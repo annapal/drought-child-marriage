@@ -53,6 +53,11 @@ plot_main_te <- function() {
                              showarrow = FALSE,
                              xanchor = "right"))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   # Save plot
   # TODO: orca is depreciated
   orca(p, "figures/tes_main.jpeg", height = 1500)

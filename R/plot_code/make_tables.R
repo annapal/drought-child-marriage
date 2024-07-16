@@ -27,6 +27,11 @@ make_tables <- function(data_merged_drought) {
     table_a1 <- rbind(table_a1, c(country, surveys, events))
   }
   
+  # If the results folder doesn't exist, create it
+  if (!dir.exists("results")) {
+    dir.create(dir_path)
+  }
+  
   # Save the table
   colnames(table_a1) <- c("Country", "Included surveys", "Included drought events")
   write_xlsx(table_a1, "results/table_a1.xlsx")

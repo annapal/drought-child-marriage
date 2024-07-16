@@ -125,6 +125,11 @@ plot_drought_map <- function(drought_panel_dat) {
     ggtitle(~bold("b.")) +
     guides(color=guide_legend(override.aes=list(fill=NA)))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   # Save plot
   ggsave(paste0("figures/drought_loc_map.jpeg"), plot2, width = 9, height = 4, dpi= 600)
   print("Map of droughts saved in: figures/drought_loc_map.jpeg")

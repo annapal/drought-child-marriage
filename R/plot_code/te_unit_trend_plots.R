@@ -28,6 +28,11 @@ plot_pt_coefs <- function() {
                labeller = labeller(country = label_wrap_gen(width = 15))) + 
     scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(min(x), (max(x) + 1) * 1.1)))))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   # Save the plot
   ggsave("figures/unit_level_trends.jpeg", height = 12, width = 10)
   print("Plot of coefs for unit-level trends saved in: figures/unit_level_trends.jpeg")
@@ -69,6 +74,11 @@ plot_te_lt <- function() {
     xlim(-0.05, 0.05) +
     facet_wrap(~country, ncol=7,
                labeller = labeller(country = label_wrap_gen(width = 15)))
+  
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
   
   # Save th plot
   ggsave(filename = "figures/te_lt.jpeg", plot = p, height = 12, width = 10)

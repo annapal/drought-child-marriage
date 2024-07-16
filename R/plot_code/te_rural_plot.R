@@ -28,6 +28,11 @@ plot_te_rural <- function() {
     facet_wrap(~country, ncol=7,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   ggsave(filename = "figures/te_rural.jpeg", plot = p, height = 12, width = 10)
   print("Plot with TEs by rural-urban status saved in: figures/te_rural.jpeg")
 }

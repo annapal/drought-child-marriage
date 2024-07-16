@@ -28,6 +28,11 @@ plot_te_time <- function() {
     facet_wrap(~country, ncol=7,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create(dir_path)
+  }
+  
   ggsave(filename = "figures/te_time.jpeg", plot = p, height = 9, width = 10)
   print("Plot with TEs by over years of exposure saved in: figures/te_rural.jpeg")
 }
