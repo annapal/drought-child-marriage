@@ -30,7 +30,7 @@ plot_te_time <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   ggsave(filename = "figures/te_time.jpeg", plot = p, height = 9, width = 10)

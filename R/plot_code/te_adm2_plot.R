@@ -39,7 +39,7 @@ plot_te_adm2 <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   # Save the plot

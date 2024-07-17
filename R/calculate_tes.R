@@ -6,6 +6,11 @@ calculate_tes <- function(all_models, data_merged_drought) {
   # Iso codes of countries to include in the analysis
   iso_cdes <- names(all_models)
   
+  # Create dataframes to store the results
+  results_all <- data.frame() # Main results
+  results_res <- data.frame() # Results by rural/urban status
+  results_time <- data.frame() # Results over time
+  
   # Calculate TEs for each country
   for (iso in iso_cdes) {
     # Get the model
@@ -53,7 +58,7 @@ calculate_tes <- function(all_models, data_merged_drought) {
   
   # If the results folder doesn't exist, create it
   if (!dir.exists("results")) {
-    dir.create(dir_path)
+    dir.create("results")
   }
   
   # Write the results to excel

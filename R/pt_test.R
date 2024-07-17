@@ -55,7 +55,7 @@ pt_test <- function(data_merged_drought, drought_panel_dat) {
   
   # If the results folder doesn't exist, create it
   if (!dir.exists("results")) {
-    dir.create(dir_path)
+    dir.create("results")
   }
   
   # Save the results

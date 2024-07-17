@@ -55,7 +55,7 @@ plot_main_te <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   # Save plot

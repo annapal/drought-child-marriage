@@ -60,6 +60,11 @@ plot_prob_map <- function(data_merged_drought) {
           panel.background = element_blank()) +
     geom_sf(fill = NA, color = "black", lwd = 0.1) # Add country borders
   
+  # If the figures folder doesn't exist, create it
+  if (!dir.exists("figures")) {
+    dir.create("figures")
+  }
+  
   # Save the plot
   ggsave("figures/prob_map.jpeg", plot, width = 9, height = 4, dpi= 600)
   print("Map of annual probabilites saved in: figures/prob_map.jpeg")
@@ -124,7 +129,7 @@ plot_drought_map <- function(drought_panel_dat) {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   # Save plot

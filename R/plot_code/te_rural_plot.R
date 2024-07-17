@@ -30,7 +30,7 @@ plot_te_rural <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   ggsave(filename = "figures/te_rural.jpeg", plot = p, height = 12, width = 10)

@@ -30,7 +30,7 @@ plot_pt_coefs <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   # Save the plot
@@ -77,7 +77,7 @@ plot_te_lt <- function() {
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
-    dir.create(dir_path)
+    dir.create("figures")
   }
   
   # Save th plot
