@@ -6,3 +6,4 @@
 *.RData
 *.jpeg
 data/gadm*
+results/*.xlsx
