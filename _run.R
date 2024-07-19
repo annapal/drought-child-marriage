@@ -38,10 +38,6 @@ rm(long_data)
 # WARNING: Takes a long time to run, and requires a lot of memory
 pt_test(data_merged_drought, drought_panel_dat)
 
-# Run analysis at Adm2 level
-drought_panel_dat_2 <- create_drought_panels_adm2()
-adm2_analysis(long_data, drought_panel_dat_2)
-
 # Create figures and tables for paper ------------------------------------
 
 # Make maps

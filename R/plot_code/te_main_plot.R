@@ -33,9 +33,7 @@ plot_main_te <- function() {
           axis.ticks.y = element_blank(),
           axis.line.x = element_line(linewidth = 0.25),
           axis.ticks.x = element_line(linewidth = 0.25),
-          legend.key = element_blank(),
-          axis.text = element_text(size=12)) +
-    xlim(-0.05, 0.05) +
+          legend.key = element_blank()) +
     scale_y_continuous(breaks=results$ID, labels=results$country)
   
   # Get the locations for the region labels
@@ -43,24 +41,22 @@ plot_main_te <- function() {
     group_by(region) %>%
     summarize(max_ID = max(ID))
   
-  # Add the annotations using plotly
-  p <- ggplotly(p)
-  p <- p %>% layout(annotations = list(x = -0.0545,
-                             y = locations$max_ID+1,
-                             text = paste("<b>", locations$region, sep=""),
-                             xref = "x",
-                             yref = "y",
-                             showarrow = FALSE,
-                             xanchor = "right"))
+  p <- p +
+    annotate("text",
+             x = -0.0562,
+             y = locations$max_ID + 1,
+             label = locations$region,
+             hjust = 1, fontface="bold", size=3) +
+    coord_cartesian(xlim = c(-0.05, 0.05), 
+                    clip = 'off')
   
   # If the figures folder doesn't exist, create it
   if (!dir.exists("figures")) {
     dir.create("figures")
   }
-  
-  # Save plot
-  # TODO: orca is depreciated
-  orca(p, "figures/tes_main.jpeg", height = 1500)
+
+  # Save the plot
+  ggsave(filename = "figures/tes_main.jpeg", plot = p, width = 6, height = 12, dpi = 300)
   print("Main TE plot saved in: figures/tes_main.jpeg")
   
 }

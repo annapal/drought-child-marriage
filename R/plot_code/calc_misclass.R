@@ -47,7 +47,7 @@ calc_misclassification <- function(data_merged_drought, drought_panel_dat) {
       colnames(drought_dat) <- c("iso", "Adm1_moved", "year", "drought_prev")
       
       # Merge data
-      data2 <- left_join(data2, drought_dat)
+      data2 <- suppressMessages(left_join(data2, drought_dat))
       
       # Create variable showing misclassification of drought
       data2 <- data2 %>%

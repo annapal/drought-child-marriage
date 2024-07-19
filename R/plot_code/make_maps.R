@@ -49,8 +49,8 @@ plot_prob_map <- function(data_merged_drought) {
   # Plot the annual probabilities in each region
   plot <- 
     ggplot(country_data) +
-    geom_sf(aes(color="No Data", geometry = geometry), lwd = 0) +
-    scale_color_manual(values = c("No Data" = "black")) +
+    geom_sf(aes(color="Excluded from study", geometry = geometry), lwd = 0) +
+    scale_color_manual(values = c("Excluded from study" = "black")) +
     geom_sf(data = plot_data, aes(fill = prop, geometry = geometry), lwd = 0) + # Region fills
     scale_fill_gradient(low = "beige", high = "darkred", na.value = "grey80") +
     ggtitle(~bold("a.")) +
@@ -83,6 +83,17 @@ plot_drought_map <- function(drought_panel_dat) {
     filter(!is.na(event_no)) %>%
     select(-year, -drought) %>%
     distinct()
+  
+  # Get list of iso codes for all countries
+  all_countries <- setdiff(country_codes()$ISO3, c("AIA","ATA","ABW","BVT","IOT","XCA",
+                                                   "CXR","XCL","CCK","COK","CUW","FLK",
+                                                   "GIB","HMD","KIR","MDV","MHL","MCO",
+                                                   "NIU","NFK","XPI","PCN","BLM","MAF",
+                                                   "SXM","SGS","XSP","VAT"))
+  
+  # Get all country (Adm0) geometries
+  countries <- gadm(all_countries, level=0, path="data", version="3.6")
+  country_data <- st_as_sf(countries) # Set as sf object
   
   # Get polygons
   regions <- gadm(unique(all_droughts$iso), level=1, path="data", version="3.6")
