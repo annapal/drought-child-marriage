@@ -6,9 +6,7 @@ lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
 
 # Run the analysis --------------------------------------------------------
 
-# Read in the DHS/MCIS data
-# Processed in separate git repo: ... 
-load("data/clean_data_long.RData")
+# sep_files()
 
 # Generate drought panel data and plot the panels
 drought_panel_dat <- create_drought_panels()

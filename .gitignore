@@ -4,6 +4,7 @@
 .Ruserdata
 .DS_Store
 *.RData
+*.rds
 *.jpeg
 data/gadm*
 results/*.xlsx
