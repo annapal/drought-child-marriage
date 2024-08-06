@@ -1,10 +1,10 @@
 
 # Create drought panel data and plot the panel for a specific country
 
-create_drought_panel <- function(iso, drought_dat, gdis_all) {
+create_drought_panel <- function(iso, drought_dat_all, gdis_all) {
   
   # Get drought events for a specific country
-  drought_subs <- subset(drought_dat, ISO==iso)
+  drought_subs <- subset(drought_dat_all, ISO==iso)
   
   # Get min and max years of data for that country
   min_yr <- drought_subs$`Panel Start`[1]
