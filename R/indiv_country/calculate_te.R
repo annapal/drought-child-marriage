@@ -31,6 +31,8 @@ calculate_te <- function(mod, data) {
       wts = "Denorm_Wt"
     )
     result3$iso <- iso # Append iso code
+  } else {
+    result3 <- NA
   }
   
   # Return results

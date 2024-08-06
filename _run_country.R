@@ -4,58 +4,104 @@ source("./packages.R")
 ## Load R files
 lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
 
-# Run the analysis --------------------------------------------------------
+# Read in data --------------------------------------------------------
 
 # sep_files()
 
-# Read in edited drought data from spreadsheet
+# EM-DAT drought data
 drought_dat_all <- suppressWarnings(read_excel("data/emdat/emdat_drought_events_updated.xlsx")) %>%
   filter(Include=="Yes")
 
-# Read in GDIS data to get regions
+# GDIS data 
 gdis_all <- suppressWarnings(read_excel("data/emdat/pend-gdis-1960-2018-disasterlocations_updated.xlsx"))
 
-# Create dataframes to store the results
+# GDIS data at Adm2 level
+gdis_all_adm2 <- read_excel("data/emdat/gdis_adm2.xlsx")
+
+# ISOs of countries where Adm2 analysis will be performed
+adm2_countries <- drought_dat_all %>% filter(`Adm2 Analysis`=="Yes") %>% select(ISO)
+
+# Create data frames to store results -------------------------------------
+
 results_all <- data.frame() # Main results
 results_res <- data.frame() # Results by rural/urban status
 results_time <- data.frame() # Results over time
-results_adm2 <- data.frame() # Results for adm2 analysis
+unit_trends <- data.frame() # Coefficients for unit-level trends
+results_lt <- data.frame() # Results with unit-level linear time trend
+results_adm2 <- data.frame() # Results using Adm2 level regions
 
-# Countries where Adm2 analysis will be performed
-adm2_countries <- drought_dat_all %>% filter(`Adm2 Analysis`=="Yes")
+prop_country <- data.frame() # Annual probability of marriage by country
+prop_region <- data.frame() # Annual probability of marriage by region
+table_a1 <- data.frame() # Table A1
+table_a2 <- data.frame() # Table A2
 
-iso <- "MDG"
+# List to store drought panel data (need this for the map)
+drought_panel_dat <- list()
 
-# Create the drought panel data
-drought_dat <- create_drought_panel(iso, drought_dat_all, gdis_all)
+# List of countries included in the analysis
+countries <- unique(drought_dat_all$ISO)
+countries <- countries[!countries=="IND"] # TODO: delete this later
 
-# Read in the DHS-MICS data
-data <- readRDS(paste0("data/dhs-mics/", iso, ".rds"))
+# Run analysis for each country -------------------------------------------
 
-# Merge the data with the drought data
-data_merged <- merge_drought_dat(drought_dat, data)
-mod <- run_model(drought_dat, data_merged)
+for (iso in countries) {
 
-# Calculate treatment effects
-result_list <- calculate_te(mod, data_merged)
-
-# Store the results
-results_all <- rbind(results_all, result_list[[1]])
-results_res <- rbind(results_res, result_list[[2]])
-results_time <- rbind(results_time, result_list[[3]])
-
-# Run the analysis at the Adm2 level (if applicable)
-if (iso %in% adm2_countries$ISO) {
+  # Create the drought panel data
+  drought_dat <- create_drought_panel(iso, drought_dat_all, gdis_all)
+  drought_panel_dat[[iso]] <- drought_dat # Store the data for later
   
-  # Read in GDIS data at Adm2 level
-  gdis_all_adm2 <- read_excel("data/emdat/gdis_adm2.xlsx")
+  # Read in the DHS-MICS data
+  data <- readRDS(paste0("data/dhs-mics/", iso, ".rds"))
   
-  # Create drought panels
-  drought_dat_adm2 <- create_drought_panel_adm2(iso, drought_dat_all, gdis_all_adm2)
+  # Merge DHS-MICS data with drought data
+  data_merged <- merge_drought_dat(drought_dat, data)
   
-  # Run the analysis
-  results2 <- run_adm2(drought_dat_adm2, data)
-  results_adm2 <- rbind(results_adm2, results2) # Store the results
+  # Run the ETWFE model
+  mod <- run_model(drought_dat, data_merged)
+  
+  # Calculate marginal treatment effects
+  result_list <- calculate_te(mod, data_merged)
+  
+  # Store the results
+  results_all <- rbind(results_all, result_list[[1]])
+  results_res <- rbind(results_res, result_list[[2]])
+  results_time <- rbind(results_time, result_list[[3]])
+  
+  # Run PT test
+  pt_list <- run_pt_test(data_merged, drought_dat)
+  
+  # Store the results
+  unit_trends <- rbind(unit_trends, pt_list[[1]])
+  results_lt <- rbind(results_lt, pt_list[[2]])
+  
+  # Run the analysis at the Adm2 level (if applicable)
+  if (iso %in% adm2_countries$ISO) {
+    
+    # Create drought panels
+    drought_dat_adm2 <- create_drought_panel_adm2(iso, drought_dat_all, gdis_all_adm2)
+    
+    # Run the analysis
+    results2 <- run_adm2(drought_dat_adm2, data)
+    results_adm2 <- rbind(results_adm2, results2) # Store the results
+  }
+  
+  # Calculate the average annual probability of marriage in each region
+  prop <- avg_prob_region(data_merged)
+  prop_region <- rbind(prop_region, prop) # Store the results
+  
+  # Calculate the average annual probability of marriage in the country
+  prop2 <- avg_prob_country(data_merged)
+  prop_country <- rbind(prop_country, prop2) # Store the results
+  
+  # Get data for Table A1
+  tab1 <- make_table_a1(iso, data_merged)
+  table_a1 <- rbind(table_a1, tab1) # Store the results
+  
+  # Get data for Table A2
+  tab2 <- make_table_a2(iso, data_merged)
+  table_a2 <- rbind(table_a2, tab2) # Store the results
 }
+
+# Save the results --------------------------------------------------------
 
 
