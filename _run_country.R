@@ -30,6 +30,7 @@ unit_trends <- data.frame() # Coefficients for unit-level trends
 results_lt <- data.frame() # Results with unit-level linear time trend
 results_adm2 <- data.frame() # Results using Adm2 level regions
 
+prop_misclass <- data.frame() # Proportion of obs misclassified
 prop_country <- data.frame() # Annual probability of marriage by country
 prop_region <- data.frame() # Annual probability of marriage by region
 table_a1 <- data.frame() # Table A1
@@ -48,7 +49,7 @@ for (iso in countries) {
 
   # Create the drought panel data
   drought_dat <- create_drought_panel(iso, drought_dat_all, gdis_all)
-  drought_panel_dat[[iso]] <- drought_dat # Store the data for later
+  drought_panel_dat[[iso]] <- drought_dat # Store the panel data for later
   
   # Read in the DHS-MICS data
   data <- readRDS(paste0("data/dhs-mics/", iso, ".rds"))
@@ -71,8 +72,8 @@ for (iso in countries) {
   pt_list <- run_pt_test(data_merged, drought_dat)
   
   # Store the results
-  unit_trends <- rbind(unit_trends, pt_list[[1]])
-  results_lt <- rbind(results_lt, pt_list[[2]])
+  unit_trends <- rbind(unit_trends, pt_list[[1]]) # Coefficients for LT
+  results_lt <- rbind(results_lt, pt_list[[2]]) # Results when including LT
   
   # Run the analysis at the Adm2 level (if applicable)
   if (iso %in% adm2_countries$ISO) {
@@ -84,6 +85,10 @@ for (iso in countries) {
     results2 <- run_adm2(drought_dat_adm2, data)
     results_adm2 <- rbind(results_adm2, results2) # Store the results
   }
+  
+  # Calculate the proportion of observations misclassified (where applicable)
+  prop_mc <- calc_misclassified(data_merged, drought_dat)
+  prop_misclass <- rbind(prop_misclass, prop_mc) # Store the results
   
   # Calculate the average annual probability of marriage in each region
   prop <- avg_prob_region(data_merged)
@@ -103,5 +108,60 @@ for (iso in countries) {
 }
 
 # Save the results --------------------------------------------------------
+
+# If the results folder doesn't exist, create it
+if (!dir.exists("results")) {
+  dir.create("results")
+}
+
+write_xlsx(results_all, "results/all_tes.xlsx")
+write_xlsx(results_res, "results/tes_by_rural.xlsx")
+write_xlsx(results_time, "results/tes_by_yr.xlsx")
+
+write_xlsx(unit_trends, "results/linear_unit_trends.xlsx")
+write_xlsx(results_lt, "results/tes_with_lt.xlsx")
+write_xlsx(results_adm2, "results/all_tes_adm2.xlsx")
+
+colnames(prop_misclass) <- c("country", "n_total", "n_move", "prop")
+write_xlsx(prop_misclass, "results/misclassification.xlsx")
+
+write_xlsx(prop_country, "results/prop_country.xlsx")
+write_xlsx(prop_region, "results/prop_region.xlsx")
+
+colnames(table_a1) <- c("Country", "Included surveys", "Included drought events")
+write_xlsx(table_a1, "results/table_a1.xlsx")
+
+colnames(table_a2) <- c("Country", "Years included", "No. of child marriages", "No. of person-years")
+write_xlsx(table_a2, "results/table_a2.xlsx")
+
+# Make figures ------------------------------------------------------------
+
+# If the figures folder doesn't exist, create it
+if (!dir.exists("figures")) {
+  dir.create("figures")
+}
+
+# Make maps
+plot_prob_map(prop_region)
+plot_drought_map(drought_panel_dat)
+
+# Plot proportion of observations misclassified
+plot_misclass(prop_misclass)
+
+# Plot the main results
+plot_main(results_all)
+
+# Plot the effects by rural/urban status
+plot_rural(results_res)
+
+# Plot the effects over consecutive years of drought exposure
+plot_time(results_time)
+
+# Plot results of the PT test
+plot_pt_coefs(unit_trends)
+plot_lt(results_lt, results_all)
+
+# Plot results of Adm2 analysis
+plot_adm2(results_adm2, results_all)
 
 
