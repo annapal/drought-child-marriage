@@ -1,10 +1,8 @@
 .Rproj.user
 .Rhistory
-.RData
 .Ruserdata
 .DS_Store
-*.RData
 *.rds
-*.jpeg
 data/gadm*
-results/*.xlsx
+data/emdat/emdat_drought_events.xlsx
+data/emdat/emdat_public_2023_09_25_full_legacy.xlsx
