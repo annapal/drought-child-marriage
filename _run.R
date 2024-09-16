@@ -131,6 +131,8 @@ write_xlsx(table_a1, "results/table_a1.xlsx")
 colnames(table_a2) <- c("Country", "Years included", "No. of child marriages", "No. of person-years")
 write_xlsx(table_a2, "results/table_a2.xlsx")
 
+save(drought_panel_dat, file="data/emdat/drought_panel_dat.RData")
+
 # Make figures ------------------------------------------------------------
 
 # If the figures folder doesn't exist, create it
