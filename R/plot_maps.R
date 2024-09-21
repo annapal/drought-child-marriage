@@ -61,6 +61,9 @@ plot_drought_map <- function(drought_panel_dat) {
   countries <- gadm(all_countries, level=0, path="data", version="3.6")
   country_data <- st_as_sf(countries) # Set as sf object
   
+  # Create indicator for whether country is included in the analysis
+  country_data$included <- ifelse(country_data$GID_0 %in% names(drought_panel_dat), 1, 0)
+  
   # Get polygons
   regions <- gadm(unique(all_droughts$iso), level=1, path="data", version="3.6")
   reg_data <- st_as_sf(regions) # Set as sf object
@@ -90,7 +93,9 @@ plot_drought_map <- function(drought_panel_dat) {
   # Plot drought locations
   plot2 <- 
     ggplot(country_data) +
-    geom_sf(fill = "white", color = "black", lwd = 0.1) +
+    geom_sf(aes(fill=factor(included), geometry=geometry), 
+            color = "black", lwd = 0.1) +
+    scale_fill_manual(values = c("grey90", "white")) +
     geom_sf(data=all_droughts_merged, aes(color=decade, geometry=centroid),
             size=0.85) + 
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
@@ -101,7 +106,8 @@ plot_drought_map <- function(drought_panel_dat) {
     ylab("") +
     scale_color_manual(values= c("#87CEFA", "#1E90FF", "#0000CD", "#191970")) +
     ggtitle(~bold("b.")) +
-    guides(color=guide_legend(override.aes=list(fill=NA)))
+    guides(color=guide_legend(override.aes=list(fill=NA)),
+           fill="none")
   
   # Save plot
   ggsave(paste0("figures/drought_loc_map.jpeg"), plot2, width = 9, height = 4, dpi= 600)

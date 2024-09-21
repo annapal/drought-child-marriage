@@ -19,3 +19,14 @@ avg_prob_region <- function(data_merged) {
   
   prop
 }
+
+# Calculate the proportion of time exposed to droughts
+
+prop_py_exposed <- function(data_merged) {
+  
+  prop <- data_merged %>%
+    group_by(iso3) %>%
+    summarise(prop = weighted.mean(drought2, Denorm_Wt))
+  
+  prop
+}
