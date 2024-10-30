@@ -3,6 +3,7 @@ library(readxl)
 library(writexl)
 
 library(tidyverse)
+library(broom)
 
 library(geodata)
 library(sf)

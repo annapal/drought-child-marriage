@@ -1,7 +1,7 @@
 
 # Plot the main results
 
-plot_main <- function(results_all) {
+plot_main <- function(results_all, path="figures/tes_main.jpeg") {
   
   # Add country and geographic region
   results_all$country <- countrycode(results_all$iso, "iso3c", "un.name.en")
@@ -51,6 +51,6 @@ plot_main <- function(results_all) {
                     clip = 'off')
   
   # Save the plot
-  ggsave(filename = "figures/tes_main.jpeg", plot = p, width = 6, height = 12, dpi = 300)
+  ggsave(filename = path, plot = p, width = 6, height = 12, dpi = 300)
   
 }
