@@ -40,6 +40,8 @@ for (iso in unique(drought_dat_all$ISO)) {
   all_dat <- rbind(all_dat, data_merged)
 }
 
+saveRDS(all_dat, file="data/all_dat.rds")
+
 # Run the analysis -------------------------------------------------------
 
 # Run the model for the counterfactual
