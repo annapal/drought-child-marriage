@@ -17,6 +17,15 @@ gdis_all <- suppressWarnings(read_excel("data/emdat/pend-gdis-1960-2018-disaster
 all_dat <- combine_data(drought_dat_all, gdis_all)
 # all_dat <- readRDS("data/all_dat.rds")
 
+# Descriptive statistics --------------------------------------------------
+
+# Calculate the average probability of marriage
+prop_country <- avg_prob_country(all_dat)
+prop_region <- avg_prob_region(all_dat)
+
+# Calculate the proportion of py exposed to droughts
+prop_drought <- prop_py_exposed(all_dat)
+
 # Run the analysis -------------------------------------------------------
 
 # Run the first stage
@@ -28,4 +37,7 @@ results_all <- run_main(all_dat)
 # Plot results ------------------------------------------------------------
 
 
+
+# Figure 2
+plot_main(results_all, prop_country, prop_drought)
   
