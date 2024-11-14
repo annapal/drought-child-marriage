@@ -36,6 +36,9 @@ results_all <- run_main(all_dat)
 
 # Plot results ------------------------------------------------------------
 
+# Figure 1
+plot_prob_map(prop_region)
+plot_drought_map()
 
 
 # Figure 2

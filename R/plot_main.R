@@ -48,7 +48,7 @@ plot_main <- function(results_all, prop_country, prop_drought) {
   
   # Plot the proportion of py exposed to drought
   p2 <- ggplot(results_all, aes(x = ID, y = prop_drought)) +
-    geom_bar(stat = "identity", fill="#DAA520") +
+    geom_bar(stat = "identity", fill="grey") +
     labs(y = "Proportion of persion-years\n exposed to drought",
          x = NULL,
          title = "c.") + 
