@@ -30,15 +30,6 @@ plot_drought_map <- function() {
   # Merge polygons to data
   result <- left_join(result, reg_data, by=join_by(Adm1==NAME_1, iso==GID_0))
   
-  # # Get the year of each drought
-  # result$year <- as.numeric(substr(result$event_no2, 5, 8))
-  # # Add decade variable
-  # all_droughts_merged$decade <- cut(all_droughts_merged$year, breaks = c(1979, 1990, 2000, 2010, 2020),
-  #                                   labels = c("1980s", "1990s", "2000s", "2010s"),
-  #                                   include.lowest = TRUE)
-  # # Add country variable
-  # all_droughts_merged$iso <- substr(all_droughts_merged$event_no2, 1, 3)
-  
   # Plot drought locations
   plot2 <- 
     ggplot(country_data) +

@@ -3,6 +3,9 @@
 
 plot_main <- function(results_all, prop_country, prop_drought) {
   
+  prop_country <- prop_country %>% rename(iso = iso3)
+  prop_drought <- prop_drought %>% rename(iso = iso3)
+  
   # Merge the data together
   results_all <- results_all %>%
     full_join(prop_country) %>%
@@ -25,7 +28,7 @@ plot_main <- function(results_all, prop_country, prop_drought) {
     select(-region_change, -region_cumsum)
   
   # Plot average probability of marriage
-  p1 <- ggplot(results_all, aes(x = ID, y = prob_mar)) +
+  p1 <- ggplot(results_all, aes(x = ID, y = prob)) +
     geom_bar(stat = "identity", fill="grey") +
     labs(y = "Average annual probability\n of marriage",
          x = NULL,
@@ -47,7 +50,7 @@ plot_main <- function(results_all, prop_country, prop_drought) {
     scale_x_continuous(breaks = results_all$ID, labels=NULL, limits = c(0.5, 70))
   
   # Plot the proportion of py exposed to drought
-  p2 <- ggplot(results_all, aes(x = ID, y = prop_drought)) +
+  p2 <- ggplot(results_all, aes(x = ID, y = prop)) +
     geom_bar(stat = "identity", fill="grey") +
     labs(y = "Proportion of persion-years\n exposed to drought",
          x = NULL,

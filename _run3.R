@@ -34,12 +34,14 @@ all_dat <- run_first_stage(all_dat)
 # Main Results
 results_all <- run_main(all_dat)
 
+# Run ES
+run_event_study(all_dat)
+
 # Plot results ------------------------------------------------------------
 
 # Figure 1
 plot_prob_map(prop_region)
 plot_drought_map()
-
 
 # Figure 2
 plot_main(results_all, prop_country, prop_drought)
