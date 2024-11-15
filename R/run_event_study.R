@@ -31,17 +31,29 @@ run_event_study <- function(all_dat) {
   # Save the results
   write_xlsx(results_es, "results/es_results.xlsx")
   
+  results_es$country <- as.factor(countrycode(results_es$iso, "iso3c", "country.name"))
+  
   # Plot the coefficients
-  ggplot(results_es, aes(x = year, y = estimate)) +
+  p <- ggplot(results_es, aes(x = year, y = estimate)) +
     geom_point(size=1, shape=16) +
     geom_errorbar(aes(ymin = conf.low, ymax = conf.high), linewidth = 0.5, width=0) +
     geom_hline(yintercept = 0, linewidth = 0.25, linetype="dotted") +
     labs(x = "Time to drought",
          y = "Coefficient") + 
     theme_minimal() +
-    facet_wrap(~iso, scales = "fixed", ncol=8,
-               labeller = labeller(iso = label_wrap_gen(width = 15)))
+    theme(
+      panel.background = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.text = element_text(),
+      axis.ticks.length = unit(3, "pt"),
+      axis.ticks = element_line(color = "black", linewidth = 0.25),
+      panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+    ) +
+    scale_x_continuous(limits = c(-5.5, -1.5), breaks = c(-5, -4, -3, -2)) +
+    facet_wrap(~country, scales = "fixed", ncol=8,
+               labeller = labeller(country = label_wrap_gen(width = 15)))
   
   # Save the figure
-  ggsave("figures/event_study.jpeg", heigh=11, width=8)
+  ggsave("figures/event_study.jpeg", plot=p, height=11, width=8)
 }
