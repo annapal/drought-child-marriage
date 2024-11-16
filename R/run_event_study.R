@@ -11,10 +11,13 @@ run_event_study <- function(all_dat) {
     # Get data for country
     dat <- subset(all_dat, iso==i & drought2==0)
     
+    # Convert Adm1 to factor
+    dat$Adm1 <- as.factor(dat$Adm1)
+    
     # Run event study
     event_study <- feols(
       married_resid ~ i(drought_time, ref = -1)|
-        cohort[age_turned, rural] + year[age_turned, rural],
+        Adm1[age_turned, rural] + year[age_turned, rural],
       data=subset(dat, drought2==0),
       vcov=~Adm1, weights=~Denorm_Wt
     )

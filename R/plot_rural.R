@@ -55,7 +55,7 @@ plot_rural <- function(results_all, results_rural) {
     ) +
     scale_y_continuous(breaks = results_all$ID, labels = results_all$country,
                        limits=c(0.5,70)) +
-    scale_x_continuous(breaks = c(-0.04, -0.02, 0, 0.02, 0.04))
+    scale_x_continuous(breaks = c(-0.06, -0.04, -0.02, 0, 0.02, 0.04, 0.06))
   
   # Get the locations for the region labels
   locations <- results_all %>%
@@ -69,7 +69,7 @@ plot_rural <- function(results_all, results_rural) {
              y = locations$max_ID + 1,
              label = locations$region,
              hjust = 1, fontface="bold", size=3) +
-    coord_cartesian(xlim = c(-0.05, 0.05), 
+    coord_cartesian(xlim = c(-0.07, 0.07), 
                     clip = 'off')
   
   # Save the plot
