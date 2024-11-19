@@ -5,6 +5,7 @@ plot_3yr <- function(results_3yr) {
   
   # Add country name
   results_3yr$country <- countrycode(results_3yr$iso, "iso3c", "country.name")
+  results_3yr$year <- results_3yr$year + 1
   
   # Plot the coefficients
   p <- ggplot(results_3yr, aes(x = year, y = estimate)) +

@@ -25,7 +25,7 @@ plot_prob_map <- function(prop_region) {
     geom_sf(data = plot_data, aes(fill = prob, geometry = geometry), lwd = 0) + # Region fills
     scale_fill_gradient(low = "#FAF3FC", high = "#2E0854", na.value = "grey80") +
     ggtitle(~bold("a.")) +
-    labs(fill = "Average annual probability", color = "") +
+    labs(fill = "Average annual probability of marriage", color = "") +
     theme(panel.border = element_blank(), panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(), axis.ticks = element_blank(),
           axis.text = element_blank(),

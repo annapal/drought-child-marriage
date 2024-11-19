@@ -10,7 +10,7 @@ run_model <- function(all_dat) {
     
     # De-mean age & rural status
     dat <- dat %>%
-      group_by(Adm1, year) %>% # De-mean within each Adm1 and year
+      group_by(cohort, year) %>% # De-mean within each cohort and year
       mutate(age_dm = age_turned - weighted.mean(age_turned, Denorm_Wt),
              rural_dm = rural - weighted.mean(rural, Denorm_Wt)) %>%
       ungroup()

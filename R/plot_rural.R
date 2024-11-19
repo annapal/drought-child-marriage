@@ -1,10 +1,8 @@
 
 plot_rural <- function(results_all, results_rural) {
 
-  results_all$type <- "total"
+  results_all$type <- "overall"
   results_rural$type <- "rural"
-  
-  results_rural <- results_rural %>% filter(rural==1)
   
   # Add country and geographic region
   results_all$country <- countrycode(results_all$iso, "iso3c", "country.name")
@@ -33,10 +31,14 @@ plot_rural <- function(results_all, results_rural) {
   
   # Plot the TEs
   p <- ggplot(results_plot, aes(x = estimate, y = ID, fill=type)) +
-    geom_rect(aes(xmin = conf.low, xmax = conf.high, ymin = ID - 0.3, ymax = ID + 0.3), alpha = 0.4) +
-    geom_point(aes(x = estimate, y = ID, color=type), size = 1.5, shape = 16) +
-    scale_color_manual(values = c("total" = "#008080", "rural" = "#FF7F50")) +
-    scale_fill_manual(values = c("total" = "#008080", "rural" = "#FF7F50")) +
+    geom_rect(aes(xmin = conf.low, xmax = conf.high, 
+                  ymin = ifelse(type == "rural", ID - 0.3, ID - 0), 
+                  ymax = ifelse(type == "rural", ID + 0, ID + 0.3)), alpha = 0.4) +
+    geom_point(aes(x = estimate, 
+                   y = ifelse(type == "overall", ID + 0.15, ID - 0.15), 
+                   color=type), size = 1, shape = 16) +
+    scale_color_manual(values = c("overall" = "#5B2C6F", "rural" = "coral")) +
+    scale_fill_manual(values = c("overall" = "#5B2C6F", "rural" = "coral")) +
     geom_vline(xintercept = 0, linewidth = 0.25, linetype = "dotted") +
     labs(x = "Change in the probability\n of marriage (95% CI)", y = "",
          title = "a.") +
@@ -65,7 +67,7 @@ plot_rural <- function(results_all, results_rural) {
   # Add global region sub-headings
   p <- p +
     annotate("text",
-             x = -0.0575,
+             x = -0.08,
              y = locations$max_ID + 1,
              label = locations$region,
              hjust = 1, fontface="bold", size=3) +
@@ -73,5 +75,5 @@ plot_rural <- function(results_all, results_rural) {
                     clip = 'off')
   
   # Save the plot
-  ggsave(filename = "figures/rural.jpeg", plot = p, width = 5, height = 10, dpi = 300)
+  ggsave(filename = "figures/rural.jpeg", plot = p, width = 6, height = 10, dpi = 300)
 }
