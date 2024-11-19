@@ -1,7 +1,14 @@
 
 # Combine all country datasets into one dataset
 
-combine_data <- function(drought_dat_all, gdis_all) {
+combine_data <- function() {
+  
+  # EM-DAT drought data
+  drought_dat_all <- suppressWarnings(read_excel("data/emdat/emdat_drought_events_updated.xlsx")) %>%
+    filter(Include=="Yes")
+  
+  # GDIS data 
+  gdis_all <- suppressWarnings(read_excel("data/emdat/pend-gdis-1960-2018-disasterlocations_updated.xlsx"))
   
   # Data frame to store all the data
   all_dat <- data.frame()
