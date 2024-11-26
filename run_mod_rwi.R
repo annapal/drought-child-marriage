@@ -21,7 +21,7 @@ saveRDS(all_dat, "data/all_dat_v2.rds")
 
 # Get other data
 aux_data <- readRDS("data/wealth_data.rds") %>%
-  rename(GID_1 = region_id) %>%
+  select(GID_1, weighted_avg_rwi) %>%
   full_join(readRDS("data/cropland_prop.rds")) %>%
   filter(GID_1!="NA")
 prob_data <- read_xlsx("results/prop_region.xlsx") %>%
@@ -41,7 +41,7 @@ saveRDS(drought_aff, "data/drought_aff.rds")
 results_all <- readRDS("results/results_rwi.rds")
 results_all$lower <- results_all$Estimate - 1.96 * results_all$`Std..Error`
 results_all$upper <- results_all$Estimate + 1.96 * results_all$`Std..Error`
-results_all$rwi <- factor(results_all$rwi, levels = c("(-Inf, -0.3]", "(-0.3, 0]", "(0, Inf)"))
+results_all$rwi <- factor(results_all$rwi, levels = c("(-Inf, -0.03]", "(-0.03, -0.015]", "(-0.015, 0]", "(0, Inf)"))
 ggplot(results_all, aes(x = rwi, y = Estimate)) +
   geom_point(size=1, shape=16) +
   geom_errorbar(aes(ymin = lower, ymax = upper), linewidth = 0.5, width=0) +

@@ -22,42 +22,38 @@ ggplot(results_plot, aes(x = ag, y = estimate)) +
 
 # Wealth ------------------------------------------------------------------
 
-# countries <- unique(all_dat$iso)
-# regions_all <- data.frame()
-# 
-# for (iso in countries) {
-#   
-#   file <- paste0("data/relative-wealth-index-april-2021/", iso, "_relative_wealth_index.csv")
-#   
-#   if (file.exists(file)) {
-# 
-#     wealth_dat <- read_csv(file)
-#     pop_raster <- population(2015, res=0.5, path="data")
-#     
-#     wealth_points <- vect(wealth_dat, geom = c("longitude", "latitude"), crs = crs(pop_raster))
-#     pop_values <- extract(pop_raster, wealth_points)
-#     wealth_dat$population <- pop_values[, 2]
-#     
-#     regions <- gadm(iso, path="data", version="3.6")
-#     wealth_points <- project(wealth_points, crs(regions))
-#     
-#     wealth_points <- project(wealth_points, crs(regions))
-#     wealth_points$region_id <- extract(regions, wealth_points)$GID_1
-#     wealth_df <- as.data.frame(wealth_points)
-#     wealth_dat <- wealth_dat %>% full_join(wealth_df)
-#     
-#     region_avg <- wealth_dat %>%
-#       group_by(region_id) %>%
-#       summarise(
-#         weighted_rwi = sum(rwi * population, na.rm = TRUE) / sum(population, na.rm = TRUE),
-#         avg_pop_density = mean(population)
-#       ) %>%
-#       na.omit()
-#     
-#     regions_all <- rbind(region_avg, regions_all)
-#   }
-# }
-# saveRDS(regions_all, "data/wealth_data.rds")
+countries <- unique(all_dat$iso)
+regions_all <- data.frame()
+
+for (iso in countries) {
+
+  file <- paste0("data/relative-wealth-index-april-2021/", iso, "_relative_wealth_index.csv")
+
+  if (file.exists(file)) {
+
+    wealth_dat <- read_csv(file)
+    points <- vect(wealth_dat, geom = c("longitude", "latitude"), crs = "EPSG:4326")
+    template <- rast(ext = ext(points), resolution = 0.01, crs = "EPSG:4326")
+    raster_obj <- rasterize(points, template, field = "rwi", fun = "mean")
+    
+    pop_raster <- population(2015, res=0.5, path="data")
+    pop_raster_resampled <- resample(pop_raster, raster_obj, method = "bilinear")
+    
+    pop_weighted_rwi <- raster_obj * pop_raster_resampled
+
+    regions <- gadm(iso, path="data", version="3.6")
+    
+    weighted_rwi_sum <- extract(pop_weighted_rwi, regions, fun = sum, na.rm = TRUE)
+    pop_sum <- extract(pop_raster_resampled, regions, fun = sum, na.rm = TRUE)
+    
+    regions$weighted_avg_rwi <- weighted_rwi_sum[,2] / pop_sum[,2]
+    regions_df <- as.data.frame(regions[, c("GID_0", "NAME_1", "GID_1", "weighted_avg_rwi")])
+
+    regions_all <- rbind(regions_df, regions_all)
+  }
+}
+regions_all <- regions_all %>% filter(weighted_avg_rwi!="NaN" | !is.na(weighted_avg_rwi))
+saveRDS(regions_all, "data/wealth_data.rds")
 
 regions_all <- readRDS("data/wealth_data.rds")
 drought_dat <- readRDS("data/drought_panel_dat.rds")
@@ -66,20 +62,14 @@ drought_all <- do.call(rbind, drought_dat)
 all_gadm <- st_as_sf(gadm(unique(drought_all$iso), path="data", version="3.6")) %>%
   select(GID_0, GID_1, NAME_1) %>%
   st_drop_geometry()
-colnames(all_gadm) <- c("iso", "GID_1", "Adm1")
 drought_all <- left_join(drought_all, all_gadm)
-
-colnames(regions_all) <- c("GID_1", "RWI_avg", "Pop_dens_avg")
-regions_all <- regions_all %>% filter(GID_1!="NA")
-
 drought_all <- left_join(drought_all, regions_all)
 
 result <- drought_all %>%
   filter(drought2 == 1) %>%  # Filter rows where drought2 == 1
   group_by(iso) %>%          # Group by iso
   summarise(
-    avg_RWI = mean(RWI_avg, na.rm = TRUE),         # Calculate average RWI_avg
-    avg_Pop_dens = mean(Pop_dens_avg, na.rm = TRUE) # Calculate average Pop_dens_avg
+    avg_RWI = mean(weighted_avg_rwi, na.rm = TRUE)
   )
 
 results_all <- read_xlsx("results/etwfe_main.xlsx")
@@ -94,16 +84,6 @@ ggplot(results_merged, aes(x = avg_RWI, y = estimate, label = iso)) +
     title = "Scatter Plot of RWI vs Estimate"
   ) +
   theme_minimal()   
-
-ggplot(results_merged, aes(x = avg_Pop_dens, y = estimate, label = iso)) +
-  geom_point() +              # Add points
-  geom_text(nudge_y = 0.001) +  # Add labels with a small vertical adjustment
-  labs(
-    x = "Pop Density (Average)",
-    y = "Estimate",
-    title = "Scatter Plot of RWI vs Estimate"
-  ) +
-  theme_minimal()  
 
 # Cropland area -----------------------------------------------------------
 

@@ -12,3 +12,4 @@ data/emdat/emdat_public_2023_09_25_full_legacy.xlsx
 /data/relative-wealth-index-april-2021
 data/Global_cropland_3km_2015.tif
 data/pop/gpw_v4_population_density_rev11_2015_30s.tif
+*.tif
