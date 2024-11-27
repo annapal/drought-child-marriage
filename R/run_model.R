@@ -24,16 +24,22 @@ run_model <- function(all_dat) {
                  data=dat, vcov=~Adm1, weights=~Denorm_Wt,
                  mem.clean=TRUE, notes = FALSE)
     
-    # Calculate results
+    # Calculate & save results
     res_main <- data.frame(aggregate(mod, c("^(?!.*:(age_dm|rural_dm)$).*")))
     res_main$iso <- i
-    res_rural <- data.frame(aggregate(mod, c("([^:]*rural_dm$)")))
-    res_rural$iso <- i
-    
-    # Save results
     results_main <- rbind(res_main, results_main)
-    results_rural <- rbind(res_rural, results_rural)
     
+    # Calculate & save rural effect
+    res_rural <- slopes(
+      mod, 
+      newdata = subset(dat, drought2==1), # Only region-years exposed to drought
+      variables = "drought2",
+      by = "rural",
+      wts = "Denorm_Wt"
+    )
+    res_rural$iso <- i
+    results_rural <- rbind(res_rural, results_rural)
+
     # Get years where drought exposed for 3 years
     years_3yr <- dat %>%
       filter(drought_3yr == 1) %>%
@@ -62,9 +68,7 @@ run_model <- function(all_dat) {
   results_main$conf.high <- results_main$estimate + qnorm(0.975)*results_main$std.error
   write_xlsx(results_main, "results/etwfe_main.xlsx")
   
-  colnames(results_rural) <- c("estimate", "std.error", "statistic", "p.value", "iso")
-  results_rural$conf.low <- results_rural$estimate + qnorm(0.025)*results_rural$std.error
-  results_rural$conf.high <- results_rural$estimate + qnorm(0.975)*results_rural$std.error
+  results_rural <- as.data.frame(results_rural)
   write_xlsx(results_rural, "results/etwfe_rural.xlsx")
   
   colnames(results_3yr) <- c("estimate", "std.error", "statistic", "p.value", "year", "iso")

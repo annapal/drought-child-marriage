@@ -1,20 +1,22 @@
 
-plot_rural <- function(results_all, results_rural) {
+plot_rural <- function(results_main, results_rural) {
+  
+  results_rural <- results_main %>% filter(rural==1)
 
-  results_all$type <- "overall"
+  results_main$type <- "overall"
   results_rural$type <- "rural"
   
   # Add country and geographic region
-  results_all$country <- countrycode(results_all$iso, "iso3c", "country.name")
-  results_all$region <- countrycode(results_all$iso, "iso3c", "region")
+  results_main$country <- countrycode(results_main$iso, "iso3c", "country.name")
+  results_main$region <- countrycode(results_main$iso, "iso3c", "region")
   results_rural$country <- countrycode(results_rural$iso, "iso3c", "country.name")
   results_rural$region <- countrycode(results_rural$iso, "iso3c", "region")
   
   # Arrange results by point estimate & region
-  results_all <- results_all %>% arrange(region, estimate)
+  results_main <- results_main %>% arrange(region, estimate)
   
   # Set plot location for each country
-  results_all <- results_all %>%
+  results_main <- results_main %>%
     mutate(
       region_change = c(0, as.numeric(region[-1] != region[-n()])),
       region_cumsum = cumsum(region_change),
@@ -23,11 +25,11 @@ plot_rural <- function(results_all, results_rural) {
     select(-region_change, -region_cumsum)
   
   # Get ID locations in rural results
-  results_rural <- results_rural %>% full_join(results_all[,c("iso", "ID")])
+  results_rural <- results_rural %>% full_join(results_main[,c("iso", "ID")])
   
   # Merge results together
   results_plot <- results_rural %>%
-    full_join(results_all)
+    full_join(results_main)
   
   # Plot the TEs
   p <- ggplot(results_plot, aes(x = estimate, y = ID, fill=type)) +
@@ -55,12 +57,12 @@ plot_rural <- function(results_all, results_rural) {
       plot.title = element_text(face = "bold"),
       axis.title.x = element_text(size = 8)
     ) +
-    scale_y_continuous(breaks = results_all$ID, labels = results_all$country,
+    scale_y_continuous(breaks = results_main$ID, labels = results_main$country,
                        limits=c(0.5,70)) +
     scale_x_continuous(breaks = c(-0.06, -0.04, -0.02, 0, 0.02, 0.04, 0.06))
   
   # Get the locations for the region labels
-  locations <- results_all %>%
+  locations <- results_main %>%
     group_by(region) %>%
     summarize(max_ID = max(ID))
   

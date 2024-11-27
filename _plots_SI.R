@@ -39,7 +39,7 @@ ggplot(summary_df, aes(y = country)) +
              size = 2) + 
   scale_y_discrete(limits = summary_df$country) +
   labs(x = "Year", y = "Country", fill = NULL, color = NULL) +  # Set legend titles to NULL
-  scale_fill_manual(values = "blue") +  # Set fill color for legend
+  scale_fill_manual(values = "grey") +  # Set fill color for legend
   scale_color_manual(values = "black") +  # Set point color for legend
   theme_minimal() +
   theme(panel.grid.minor = element_blank())

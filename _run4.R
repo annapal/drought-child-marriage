@@ -21,12 +21,27 @@ results_all <- read_xlsx("results/etwfe_main.xlsx")
 results_rural <- read_xlsx("results/etwfe_rural.xlsx")
 results_3yr <- read_xlsx("results/etwfe_3yr.xlsx")
 
+# Run the PT test
+# run_pt_test(all_dat)
+unit_trends <- read_xlsx("results/etwfe_lt.xlsx")
+results_lt <- read_xlsx("results/etwfe_main_lt.xlsx")
+
 # Plot results ------------------------------------------------------------
 
 # Figure 1
 plot_prob_map(prop_region)
-# plot_drought_map()
+plot_drought_map()
 
 # Figure 2
 plot_main(results_all, prop_country, prop_drought)
 
+# Figure 3
+plot_rural(results_all, results_rural) # Check this
+plot_3yr(results_3yr)
+
+# Linear trends
+plot_lt(unit_trends)
+plot_main_lt(results_lt, results_main)
+
+# Prop misclassified
+plot_misclass(all_dat)
