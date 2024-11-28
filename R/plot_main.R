@@ -74,8 +74,8 @@ plot_main <- function(results_all, prop_country, prop_drought) {
   # Plot the TEs
   p <- ggplot(results_all, aes(x = estimate, y = ID)) +
     geom_rect(aes(xmin = conf.low, xmax = conf.high, ymin = ID - 0.3, ymax = ID + 0.3), 
-              fill = "#5B2C6F", alpha = 0.4) +  # Adjust color and transparency as needed
-    geom_point(size = 1.5, shape = 16, color = "#5B2C6F") +
+              fill = "#08306B", alpha = 0.4) +  # Adjust color and transparency as needed
+    geom_point(size = 1.5, shape = 16, color = "#08306B") +
     geom_vline(xintercept = 0, linewidth = 0.25, linetype = "dotted") +
     labs(x = "Change in the probability\n of marriage (95% CI)", y = "",
          title = "a.") +

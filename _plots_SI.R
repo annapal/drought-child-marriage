@@ -39,7 +39,7 @@ ggplot(summary_df, aes(y = country)) +
              size = 2) + 
   scale_y_discrete(limits = summary_df$country) +
   labs(x = "Year", y = "Country", fill = NULL, color = NULL) +  # Set legend titles to NULL
-  scale_fill_manual(values = "grey") +  # Set fill color for legend
+  scale_fill_manual(values = "grey40") +  # Set fill color for legend
   scale_color_manual(values = "black") +  # Set point color for legend
   theme_minimal() +
   theme(panel.grid.minor = element_blank())
@@ -86,13 +86,13 @@ ggsave("figures2/rural_dist.jpeg", height = 18, width = 15)
 # Missing birth plot -------------------------------------------------------
 
 imp_colors <- c(
-  "Month & Year Specified" = "#228B22",
-  "Month & Age Specified, Year Missing" = "#4B9CD3",
-  "Year & Age Specified, Month Missing" = "#00CED1",
-  "Year Specified, Month & Age Missing" = "#8A2BE2",
-  "Age Specified, Month & Year Missing" = "#FFD700",
-  "Month Specified, Age & Year Missing" = "#FF8C00",
-  "Month, Age & Year Missing" = "#DC143C"
+  "Month & Year Specified" = "#6B8E23",      # Olive Drab
+  "Month & Age Specified, Year Missing" = "#87CEEB",  # Light Sky Blue
+  "Year & Age Specified, Month Missing" = "#66CDAA",  # Medium Aquamarine
+  "Year Specified, Month & Age Missing" = "#9370DB",  # Medium Purple
+  "Age Specified, Month & Year Missing" = "#FFD700",  # Goldenrod (unchanged, already subdued)
+  "Month Specified, Age & Year Missing" = "#FFA07A",  # Light Salmon
+  "Month, Age & Year Missing" = "#CD5C5C"   # Indian Red
 )
 
 cross_section <- all_dat %>%

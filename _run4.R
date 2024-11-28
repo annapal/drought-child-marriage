@@ -41,7 +41,7 @@ plot_3yr(results_3yr)
 
 # Linear trends
 plot_lt(unit_trends)
-plot_main_lt(results_lt, results_main)
+plot_main_lt(results_lt, results_all)
 
 # Prop misclassified
 plot_misclass(all_dat)

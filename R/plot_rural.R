@@ -1,7 +1,7 @@
 
 plot_rural <- function(results_main, results_rural) {
   
-  results_rural <- results_main %>% filter(rural==1)
+  results_rural <- results_rural %>% filter(rural==1)
 
   results_main$type <- "overall"
   results_rural$type <- "rural"
@@ -39,8 +39,8 @@ plot_rural <- function(results_main, results_rural) {
     geom_point(aes(x = estimate, 
                    y = ifelse(type == "overall", ID + 0.15, ID - 0.15), 
                    color=type), size = 1, shape = 16) +
-    scale_color_manual(values = c("overall" = "#5B2C6F", "rural" = "coral")) +
-    scale_fill_manual(values = c("overall" = "#5B2C6F", "rural" = "coral")) +
+    scale_color_manual(values = c("overall" = "#08306B", "rural" = "#FF6F61")) +
+    scale_fill_manual(values = c("overall" = "#08306B", "rural" = "#FF6F61")) +
     geom_vline(xintercept = 0, linewidth = 0.25, linetype = "dotted") +
     labs(x = "Change in the probability\n of marriage (95% CI)", y = "",
          title = "a.") +
@@ -55,7 +55,8 @@ plot_rural <- function(results_main, results_rural) {
       legend.key = element_blank(),
       plot.margin = margin(10, 3, 10, 30),
       plot.title = element_text(face = "bold"),
-      axis.title.x = element_text(size = 8)
+      axis.title.x = element_text(size = 8),
+      legend.position = "bottom"
     ) +
     scale_y_continuous(breaks = results_main$ID, labels = results_main$country,
                        limits=c(0.5,70)) +
@@ -77,5 +78,5 @@ plot_rural <- function(results_main, results_rural) {
                     clip = 'off')
   
   # Save the plot
-  ggsave(filename = "figures/rural.jpeg", plot = p, width = 6, height = 10, dpi = 300)
+  ggsave(filename = "figures/rural.jpeg", plot = p, width = 5, height = 10, dpi = 300)
 }

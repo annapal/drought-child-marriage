@@ -29,12 +29,13 @@ plot_main_lt <- function(results_lt, results_main) {
       axis.ticks.length = unit(3, "pt"),
       axis.ticks = element_line(color = "black", linewidth = 0.25),
       plot.title = element_text(face = "bold"),
-      panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+      panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
     ) +
     xlim(-0.05, 0.05) +
-    facet_wrap(~country, scales = "free_y", ncol=6,
+    facet_wrap(~country, scales = "fixed", ncol=7,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
   # Save the figure
-  ggsave(filename = "figures/main_lt.jpeg", plot = p, width = 6, height = 10, dpi = 300)
+  ggsave(filename = "figures/main_lt.jpeg", plot = p, width = 8, height = 12, dpi = 300)
 }

@@ -5,12 +5,12 @@ plot_lt <- function(unit_trends) {
   unit_trends$country <- countrycode(unit_trends$iso, "iso3c", "country.name")
   
   # Plot the coefficients
-  p <- ggplot(unit_trends, aes(x = coef, y = cohort)) +
+  p <- ggplot(unit_trends, aes(x = coef, y = factor(cohort))) +
     geom_point(size=1, shape=16) +
     geom_errorbar(aes(xmin = lower, xmax = upper), linewidth = 0.5, width=0) +
     geom_vline(xintercept = 0, linewidth = 0.25, linetype="dotted") +
-    labs(x = "Cohort",
-         y = "Coefficient") + 
+    labs(x = "Coefficient",
+         y = "Cohort") + 
     theme_minimal() + # Starts with a minimal theme
     theme(
       panel.background = element_blank(),
@@ -20,12 +20,13 @@ plot_lt <- function(unit_trends) {
       axis.ticks.length = unit(3, "pt"),
       axis.ticks = element_line(color = "black", linewidth = 0.25),
       plot.title = element_text(face = "bold"),
-      panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
+      panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
     ) +
     xlim(-0.05, 0.05) +
-    facet_wrap(~country, scales = "free_y", ncol=6,
+    facet_wrap(~country, scales = "free_y", ncol=7,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
   # Save the figure
-  ggsave(filename = "figures/unit_lt.jpeg", plot = p, width = 6, height = 10, dpi = 300)
+  ggsave(filename = "figures/unit_lt.jpeg", plot = p, width = 8, height = 12, dpi = 300)
 }
