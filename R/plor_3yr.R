@@ -27,11 +27,11 @@ plot_3yr <- function(results_3yr) {
       panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5)
     ) +
     scale_x_continuous(limits = c(0, 4), breaks = c(1, 2, 3)) +
-    facet_wrap(~country, scales = "fixed", ncol=6,
+    facet_wrap(~country, scales = "fixed", ncol=12,
                labeller = labeller(country = label_wrap_gen(width = 15)))
   
   # Save the figure
-  ggsave(filename = "figures/3yr.jpeg", plot = p, width = 6, height = 10, dpi = 300)
+  ggsave(filename = "figures/3yr.jpeg", plot = p, width = 12, height = 5, dpi = 300)
 }
 
 
