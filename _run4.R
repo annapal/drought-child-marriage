@@ -5,7 +5,7 @@ source("./packages.R")
 lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
 
 # Prepare the data
-# all_dat <- combine_data()
+all_dat <- combine_data()
 all_dat <- readRDS("data/all_dat.rds")
 
 # Calculate the average probability of marriage
@@ -26,6 +26,10 @@ results_3yr <- read_xlsx("results/etwfe_3yr.xlsx")
 unit_trends <- read_xlsx("results/etwfe_lt.xlsx")
 results_lt <- read_xlsx("results/etwfe_main_lt.xlsx")
 
+# Run the Adm2 model
+run_adm2()
+results_adm2 <- read_xlsx("results/etwfe_adm2.xlsx")
+
 # Plot results ------------------------------------------------------------
 
 # Figure 1
@@ -39,9 +43,17 @@ plot_main(results_all, prop_country, prop_drought)
 plot_rural(results_all, results_rural) # Check this
 plot_3yr(results_3yr)
 
+# Supplemental plots ------------------------------------------------------
+
 # Linear trends
 plot_lt(unit_trends)
 plot_main_lt(results_lt, results_all)
 
 # Prop misclassified
 plot_misclass(all_dat)
+
+# Adm2 analysis
+plot_adm2(results_adm2, results_all)
+
+# Other SI plots
+plot_si(all_dat)

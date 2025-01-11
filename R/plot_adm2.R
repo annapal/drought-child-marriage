@@ -3,6 +3,8 @@
 
 plot_adm2 <- function(results_adm2, results_all) {
   
+  results_adm2 <- results_adm2 %>% select(estimate, std.error, statistic, p.value, iso, conf.low, conf.high)
+  
   # Add country name
   results_adm2$country <- countrycode(results_adm2$iso, "iso3c", "un.name.en")
   results_all$country <- countrycode(results_all$iso, "iso3c", "un.name.en")
@@ -23,7 +25,7 @@ plot_adm2 <- function(results_adm2, results_all) {
     geom_errorbarh(aes(xmin = conf.low, xmax = conf.high),
                    height = 0, linewidth = 0.5) +
     geom_vline(xintercept = 0, linewidth = 0.25) +
-    labs(x = "Change in prob. of marriage",
+    labs(x = "Change in the rate of child marriage",
          y = "Level") + 
     theme(panel.grid = element_blank(),
           panel.background = element_blank(),

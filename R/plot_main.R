@@ -30,7 +30,7 @@ plot_main <- function(results_all, prop_country, prop_drought) {
   # Plot average probability of marriage
   p1 <- ggplot(results_all, aes(x = ID, y = prob)) +
     geom_bar(stat = "identity", fill="grey") +
-    labs(y = "Average annual probability\n of marriage",
+    labs(y = "Average annual rate\n of marriage",
          x = NULL,
          title = "b.") + 
     coord_flip() +
@@ -77,7 +77,7 @@ plot_main <- function(results_all, prop_country, prop_drought) {
               fill = "#08306B", alpha = 0.4) +  # Adjust color and transparency as needed
     geom_point(size = 1.5, shape = 16, color = "#08306B") +
     geom_vline(xintercept = 0, linewidth = 0.25, linetype = "dotted") +
-    labs(x = "Change in the probability\n of marriage (95% CI)", y = "",
+    labs(x = "Change in the rate\n of marriage (95% CI)", y = "",
          title = "a.") +
     theme(
       panel.grid.major.y = element_line(color = "grey90", linewidth=0.5),

@@ -48,7 +48,4 @@ plot_drought_map <- function() {
   
   # Save plot
   ggsave(paste0("figures/drought_loc_map.jpeg"), plot2, width = 9, height = 4, dpi= 600)
-  
-  
-  
 }

@@ -52,6 +52,23 @@ create_drought_panel_adm2 <- function(iso, drought_dat_all, gdis_all_adm2) {
   ggsave(paste0(getwd(),"/data/emdat/panel_plots_adm2/", iso, "_panel.jpeg"),
          height = max(length(reg_names_2)/5, 5), width = 10)
   
+  # Assign year after drought ends as 1
+  panel_dat <- panel_dat %>%
+    arrange(Reg, year) %>%
+    group_by(Reg) %>%
+    mutate(
+      drought2=ifelse(lag(drought, default=0)==1, 1, drought),
+      lagged=ifelse((drought2-drought==1), 1, 0) # Indicator where drought exposure is lagged
+    ) %>%
+    ungroup()
+  
+  # Assign cohorts based on treatment history
+  drought_cohort <- panel_dat %>%
+    group_by(Reg) %>%
+    summarize(drought_sequence = paste(drought2, collapse = ""))
+  drought_cohort$cohort <- as.numeric(factor(drought_cohort$drought_sequence))
+  panel_dat <- suppressMessages(left_join(panel_dat, drought_cohort))
+  
   # Return the panel data
   panel_dat
   
