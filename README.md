@@ -5,12 +5,7 @@ This repo contains code for the following paper:
 
 ## Code organisation
 - `drought-child-marriage.Rproj` is the project file.
-- `_run.R` is the main script that runs the entire analysis. *This is the only script that needs to be run by the user*. The script is divided into 5 sections:
-    1. EM-DAT drought data and corresponding GDIS data are loaded into the environment.
-    2. Dataframes are created to store the results of all countries.
-    3. The analysis is iterated over all countries, saving the results at each step.
-    4. The dataframes containing the results for all countries are saved.
-    5. The results are plotted.
+- `_run.R` is the main script that runs the entire analysis. *This is the only script that needs to be run by the user*.
 - The directory `R` contains the functions that support the `_run.R` file
 - The directory `data` contains the raw MICS and DHS survey files and other reference data. Specifically:
     - `data/emdat/emdat_drought_events_updated.xlsx` contains information on all drought events that aligned with data on child marriage. Additional variables have been added to indicate whether the drought event was excluded from the analysis and why. This spreadsheet was created based on the legacy database (available here: https://files.emdat.be/data/emdat_public_2023_09_25_full_legacy.xlsx) and was cross-checked with the current EM-DAT database.
@@ -18,19 +13,8 @@ This repo contains code for the following paper:
     - `data/emdat/gdis_adm2.xlsx` contains region information on drought events at the Adm2 level, created using information from the EM-DAT and GDIS database.
 
 ## Main outputs
-After running the code, there are a few main sets of outputs:
 - The directory `figures` contains all the figures included in the paper.
-- The directory `results` contains the results across all countries in spreadsheet form:
-  - `all_tes.xlsx` contains the treatment effects from the main model
-  - `tes_by_rural.xlsx` contains the treatment effects by rural-urban status
-  - `tes_by_yr.xlsx` contains the treatment effects over consecutive year of drought exposure
-  - `all_tes_adm2.xlsx` contains the treatment effects when the analysis was conducted at the Adm2 level
-  - `linear_unit_trends.xlsx` contains the coefficients of the cohort linear trends
-  - `tes_with_lt.xlsx` contains the treatment effects when cohort linear trends are included
-  - `misclassification.xlsx` contains the estimated proportion of observations that have exposure misclassified
-  - `prop_country.xlsx` contains the average annual probability of marriage in each country
-  - `prop_region.xlsx` contains the average annual probability of marriage in each sub-national reigon
-  - `table_a1.xlsx` and `table_a2.xlsx` are appendix tables
+- The directory `results` contains the results across all countries in spreadsheet form.
   
 ## Instructions for reproducing the data
 Running the code requires some management by the user. Specifically, the DHS and MICS data are not uploaded, nor cleaned in this repo. To reproduce the clean data, perform the following steps:
