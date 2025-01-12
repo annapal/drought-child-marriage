@@ -4,6 +4,4 @@
 .DS_Store
 *.rds
 data/gadm*
-*.jpeg
-*.png
 archive/*
