@@ -22,7 +22,7 @@ plot_misclass <- function(all_dat) {
         TRUE ~ NA
       ))
   
-  # Read in and organise drought panel data
+  # Read in and organize drought panel data
   drought_panel_dat <- readRDS("data/drought_panel_dat.rds")
   drought_panel_all <- do.call(rbind, drought_panel_dat) %>%
     select(iso, Adm1, year, drought)
@@ -56,16 +56,19 @@ plot_misclass <- function(all_dat) {
   
   # Plot the proportions
   ggplot(proportions, aes(x = country, y = prop_drought_misclass)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat = "identity", fill = "#1b9e77", color = "black") +  
     labs(
       x = "Country",
       y = "Proportion"
     ) +
     coord_flip() +
-    ylim(0,1) + 
-    theme_minimal() +
+    scale_y_continuous(limits = c(0,1.05), expand = c(0, 0)) +
+    theme_classic(base_size = 14) + 
     theme(
-      panel.grid.major.y = element_blank(), 
+      axis.text = element_text(size = 12, color = "black"),
+      axis.title = element_text(size = 14, face = "bold"),
+      panel.grid = element_blank(), 
+      axis.line = element_line(linewidth = 0.5, color = "black")
     )
   
   # Save plot
