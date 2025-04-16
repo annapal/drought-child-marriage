@@ -1,7 +1,7 @@
 # Drought Child Marriage
 
 This repo contains code for the following paper:
-- paper1
+- Palmer, A.Y., Masuda, Y.J., Harou, A.P., Greene, M.E., Das, J.K., Bawah, A.A., Kwauk, C.T., MacDonald, G.K., Robinson, B.E., Baumgartner, J. and Koski, A. (2025) “The effect of drought on the rate of child marriage in 61 countries,” (Under Review).
 
 ## Code organisation
 - `drought-child-marriage.Rproj` is the project file.
