@@ -5,8 +5,8 @@ source("./packages.R")
 lapply(list.files("./R", full.names = TRUE, recursive = TRUE), source)
 
 # Prepare the data
-# all_dat <- combine_data()
-all_dat <- readRDS("data/all_dat.rds")
+all_dat <- combine_data() # Pool all surveys
+# all_dat <- readRDS("data/all_dat.rds") # Read in the pooled data
 
 # Calculate the average probability of marriage
 prop_country <- avg_prob_country(all_dat)

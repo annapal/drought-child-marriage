@@ -3,7 +3,7 @@
 
 create_drought_panel_adm2 <- function(iso, drought_dat_all, gdis_all_adm2) {
   
-  drought_subs <- subset(drought_dat_all, ISO==iso)
+  drought_subs <- subset(drought_dat_all, ISO==iso) # Get subset of drought data
   
   # Get min and max years of data for country
   min_yr <- drought_subs$`Panel Start`[1]

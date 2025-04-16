@@ -1,11 +1,16 @@
 
+# Run the main analysis
+
 run_model <- function(all_dat) {
   
+  # Data frames to store the results
   results_main <- data.frame()
   results_rural <- data.frame()
   results_3yr <- data.frame()
   
   for (i in unique(all_dat$iso)) {
+    
+    # Get data for a country
     dat <- subset(all_dat, iso3==i)
     
     # De-mean age & rural status
@@ -63,6 +68,7 @@ run_model <- function(all_dat) {
     }
   }
   
+  # Store the results
   colnames(results_main) <- c("estimate", "std.error", "statistic", "p.value", "iso")
   results_main$conf.low <- results_main$estimate + qnorm(0.025)*results_main$std.error
   results_main$conf.high <- results_main$estimate + qnorm(0.975)*results_main$std.error

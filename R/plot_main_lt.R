@@ -1,4 +1,6 @@
 
+# Plot the results with and without the linear trend
+
 plot_main_lt <- function(results_lt, results_main) {
   
   # Add country name

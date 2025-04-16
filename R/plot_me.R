@@ -1,4 +1,6 @@
 
+# Plot the proportion of participants that are misclassified
+
 plot_misclass <- function(all_dat) {
 
   # Return Adm1 names to normal

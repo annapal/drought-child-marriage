@@ -1,13 +1,14 @@
 
-# Function that gets table information for the appendix for specific country
+# Create table information for the appendix
 
 make_table_a1 <- function(all_dat) {
   
+  # Dataframe to store the table
   tab_a1 <- data.frame()
   
   for (i in unique(all_dat$iso)) {
-    data <- subset(all_dat, iso==i)
-    country <- countrycode(i, "iso3c", "un.name.en") # Country
+    data <- subset(all_dat, iso==i) # Get data for speciic country
+    country <- countrycode(i, "iso3c", "un.name.en") # Country name
     
     # Get included surveys
     surveys <- sub(".*(\\d{4})DHS", "DHS \\1", unique(data$surveyid))
@@ -28,6 +29,7 @@ make_table_a1 <- function(all_dat) {
     tab_a1 <- rbind(tab_a1, c(country, surveys, events, years, marriages, pt))
   }
   
+  # Save the table
   colnames(tab_a1) <- c("country", "surveys", "events", "years", "marriages", "person-time")
   write_xlsx(tab_a1, "results/tab_a1.xlsx")
 }

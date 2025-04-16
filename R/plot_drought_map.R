@@ -2,6 +2,7 @@
 
 plot_drought_map <- function() {
   
+  # Get drought panel data
   drought_panel_dat <- readRDS("data/drought_panel_dat.rds")
   
   # Combine all drought data together across countries

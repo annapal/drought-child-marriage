@@ -1,4 +1,6 @@
 
+# Plot the unit-specific linear trends coefficients
+
 plot_lt <- function(unit_trends) {
   
   # Add country name

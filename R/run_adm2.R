@@ -1,5 +1,5 @@
 
-# Function that runs Adm2 analysis
+# Run Adm2 analysis
 
 run_adm2 <- function() {
   
@@ -55,6 +55,7 @@ run_adm2 <- function() {
     results_adm2 <- rbind(result, results_adm2)
   }
   
+  # Save the results
   results_adm2 <- as.data.frame(results_adm2)
   write_xlsx(results_adm2, "results/etwfe_adm2.xlsx")
 }

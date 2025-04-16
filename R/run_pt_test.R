@@ -3,10 +3,13 @@
 
 run_pt_test <- function(all_dat) {
   
+  # Data frames to store the results
   unit_trends <- data.frame()
   results_lt <- data.frame()
   
   for (i in unique(all_dat$iso)) {
+    
+    # Get data for a country
     dat <- subset(all_dat, iso3==i)
     
     # De-mean age & rural status

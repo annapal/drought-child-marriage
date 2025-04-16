@@ -42,8 +42,11 @@ plot_eff <- function() {
   
   # Function to create and save regional plots
   plot_region <- function(region_name, file_name, title_text) {
+    
+    # Get results for a region
     results_sub <- filter(results, region == region_name)
     
+    # Plot the results for that region
     ggplot(results_sub, aes(x = estimate, y = plot_loc, color = type)) +
       geom_point(size = 2.5, shape = 18) +
       geom_errorbarh(aes(xmin = conf.low, xmax = conf.high), height = 0, linewidth = 0.5) +
@@ -69,6 +72,7 @@ plot_eff <- function() {
       ggforce::facet_wrap_paginate(~country, scales = "fixed", ncol = 10, nrow = 4, labeller = labeller(country = label_wrap_gen(width = 20))) +
       scale_color_manual(values = c("black", "darkred", "#3B4F66", "#2A3C54", "#172A3A"))
     
+    # Save the plot
     ggsave(file_name, width = 12, height = 5)
   }
   
@@ -79,6 +83,5 @@ plot_eff <- function() {
   plot_region("Latin America & Caribbean", "figures/eff_la.jpeg", "Latin America & Caribbean")
   plot_region("Europe & Central Asia", "figures/eff_ec.jpeg", "Europe & Central Asia")
   plot_region("East Asia & Pacific", "figures/eff_ea.jpeg", "East Asia & Pacific")
-  
 }
 

@@ -1,5 +1,5 @@
 
-# Calculate the average annual probability of marriage
+# Calculate the average annual probability of marriage by country
 
 avg_prob_country <- function(all_dat) {
   
@@ -14,6 +14,8 @@ avg_prob_country <- function(all_dat) {
   # Return the results
   prob
 }
+
+# Calculate the average annual probability of marriage by Adm1
 
 avg_prob_region <- function(all_dat) {
   
