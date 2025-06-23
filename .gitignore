@@ -5,3 +5,4 @@
 *.rds
 data/gadm*
 archive/*
+data/spei12.nc

@@ -13,3 +13,5 @@ library(countrycode)
 
 library(fixest)
 library(marginaleffects)
+library(terra)
+library(tidyterra)
